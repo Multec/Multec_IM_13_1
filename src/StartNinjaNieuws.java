@@ -1,5 +1,7 @@
-package ninjanieuws;
+
 import org.mt4j.MTApplication;
+
+import scenes.MainNinjaScene;
 
 public class StartNinjaNieuws extends MTApplication {
 
