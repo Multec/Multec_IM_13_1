@@ -17,14 +17,13 @@ import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
 import processing.core.PImage;
-import scenes.MainNinjaScene;
 import supportClasses.PathContainer;
+import supportClasses.CategoryContainer;
 
 public class NinjaSelectCategory extends AbstractScene {
 
 	//Applicatie variabelen
 	private MTApplication mtApp;
-	private String category;
 	//Arraylist met opgeslagen categorynamen en filepaths
 	private List<PathContainer> filePaths = new ArrayList<PathContainer>();
 	//Hoeveelheid buttons in categoriemenu
@@ -39,12 +38,13 @@ public class NinjaSelectCategory extends AbstractScene {
 	//Verschillende scenes waar deze scene naartoe kan gaan(nog niet geinitialiseerd)
 	//Exit knop is geen scene maar rechtstreekse sluiting van het window
 	private Iscene newScene;
+	private Iscene currentScene;
 	
 	public NinjaSelectCategory(MTApplication mtApplication, String name, String _category) {
 		//Setup van het scherm.
 		super(mtApplication, name);
-		this.category = _category;
 		this.mtApp = mtApplication;
+		this.currentScene = mtApp.getCurrentScene();
 		//Alle categorie‘n met hun filepath
 		filePaths.add(new PathContainer("Hot", "../data/menu/hot.png"));
 		filePaths.add(new PathContainer("Binnenland", "../data/menu/binnenland.png"));
@@ -62,7 +62,7 @@ public class NinjaSelectCategory extends AbstractScene {
 		PImage catMenu = mtApplication.loadImage("../data/menu/categoryMenu.png");
 		int count = 0;
 		for(int i = 0; i < AMOUNT_CAT; i++) {
-			if(filePaths.get(i).getCategoryName() != this.category) {
+			if(filePaths.get(i).getCategoryName() != CategoryContainer.getCategory()) {
 				btnImages[count] = mtApplication.loadImage(filePaths.get(i).getFilePath());
 				catOrder[count] = filePaths.get(i).getCategoryName();
 				count++;
@@ -74,19 +74,19 @@ public class NinjaSelectCategory extends AbstractScene {
 		PImage settings = mtApplication.loadImage("../data/menu/settings.png");
 		PImage exit = mtApplication.loadImage("../data/menu/exit.png");
 		PImage catImg = mtApplication.loadImage("../data/menu/hot.png");
-		if(this.category == "Binnenland") {
+		if(CategoryContainer.getCategory() == "Binnenland") {
 			catImg = mtApplication.loadImage("../data/menu/binnenland.png");
 		}
-		else if(this.category == "Buitenland") {
+		else if(CategoryContainer.getCategory() == "Buitenland") {
 			catImg = mtApplication.loadImage("../data/menu/buitenland.png");
 		}
-		else if(this.category == "Sport") {
+		else if(CategoryContainer.getCategory() == "Sport") {
 			catImg = mtApplication.loadImage("../data/menu/sport.png");
 		}
-		else if(this.category == "Cultuur") {
+		else if(CategoryContainer.getCategory() == "Cultuur") {
 			catImg = mtApplication.loadImage("../data/menu/cultuur.png");
 		}
-		else if(this.category == "Economie") {
+		else if(CategoryContainer.getCategory() == "Economie") {
 			catImg = mtApplication.loadImage("../data/menu/economie.png");
 		}
 		//Aanmaken van de verschillende menu-elementen
@@ -133,9 +133,7 @@ public class NinjaSelectCategory extends AbstractScene {
 					//Deze keer wordt de category ook meegestuurd zodoende dat deze niet verloren gaat
 					//bij het afbreken van de scene
 					mtApp.popScene();
-					newScene = new MainNinjaScene(mtApp, "NinjaNieuws", category);
-					mtApp.addScene(newScene);
-					mtApp.changeScene(newScene);
+					mtApp.popScene();
 					break;
 				default:
 					break;
@@ -191,8 +189,12 @@ public class NinjaSelectCategory extends AbstractScene {
 			public void actionPerformed(ActionEvent eBtn) {
 				switch(eBtn.getID()) {
 				case TapEvent.BUTTON_CLICKED:
+					CategoryContainer.setCategory(catOrder[0]);
 					mtApp.popScene();
-					newScene = new NinjaMainMenu(mtApp, "Ninjanieuws", catOrder[0]);
+					currentScene.destroy();
+					mtApp.popScene();
+					mtApp.pushScene();
+					newScene = new NinjaMainMenu(mtApp, "Ninjanieuws", CategoryContainer.getCategory());
 					mtApp.addScene(newScene);
 					mtApp.changeScene(newScene);
 					break;
@@ -206,9 +208,6 @@ public class NinjaSelectCategory extends AbstractScene {
 				switch(eBtn.getID()) {
 				case TapEvent.BUTTON_CLICKED:
 					mtApp.popScene();
-					newScene = new NinjaMainMenu(mtApp, "Ninjanieuws", catOrder[1]);
-					mtApp.addScene(newScene);
-					mtApp.changeScene(newScene);
 					break;
 				default:
 					break;
@@ -220,9 +219,6 @@ public class NinjaSelectCategory extends AbstractScene {
 				switch(eBtn.getID()) {
 				case TapEvent.BUTTON_CLICKED:
 					mtApp.popScene();
-					newScene = new NinjaMainMenu(mtApp, "Ninjanieuws", catOrder[2]);
-					mtApp.addScene(newScene);
-					mtApp.changeScene(newScene);
 					break;
 				default:
 					break;
@@ -234,9 +230,6 @@ public class NinjaSelectCategory extends AbstractScene {
 				switch(eBtn.getID()) {
 				case TapEvent.BUTTON_CLICKED:
 					mtApp.popScene();
-					newScene = new NinjaMainMenu(mtApp, "Ninjanieuws", catOrder[3]);
-					mtApp.addScene(newScene);
-					mtApp.changeScene(newScene);
 					break;
 				default:
 					break;
@@ -248,9 +241,6 @@ public class NinjaSelectCategory extends AbstractScene {
 				switch(eBtn.getID()) {
 				case TapEvent.BUTTON_CLICKED:
 					mtApp.popScene();
-					newScene = new NinjaMainMenu(mtApp, "Ninjanieuws", catOrder[4]);
-					mtApp.addScene(newScene);
-					mtApp.changeScene(newScene);
 					break;
 				default:
 					break;
