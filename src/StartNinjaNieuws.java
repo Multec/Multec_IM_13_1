@@ -2,6 +2,9 @@
 import org.mt4j.MTApplication;
 
 import scenes.MainNinjaScene;
+import scenes.NinjaMeerOverDeApp;
+import scenes.NinjaSettings;
+import scenes.NinjaVideoScene;
 
 public class StartNinjaNieuws extends MTApplication {
 
@@ -13,6 +16,9 @@ public class StartNinjaNieuws extends MTApplication {
 	
 	@Override
 	public void startUp() {
-		addScene(new MainNinjaScene(this, "Ninjanieuws"));
+		//addScene(new MainNinjaScene(this, "Ninjanieuws"));
+		addScene(new NinjaSettings(this, "NinjaSettings"));
+		//addScene(new NinjaVideoScene(this, "NinjaVideos"));
+		//addScene(new NinjaMeerOverDeApp(this, "NinjaMeerOverDeApp"));
 	}
 }

@@ -15,12 +15,12 @@ import org.mt4j.util.MTColor;
 import org.mt4j.util.math.Vector3D;
 
 import processing.core.PImage;
-import supportClasses.CategoryContainer;
 
 public class NinjaMainMenu extends AbstractScene {
 
 	//Applicatie variabelen
 	private MTApplication mtApp;
+	private String category;
 	//Verschillende scenes waar deze scene naartoe kan gaan(nog niet geinitialiseerd)
 	//Exit knop is geen scene maar rechtstreekse sluiting van het window
 	private Iscene newScene;
@@ -28,6 +28,7 @@ public class NinjaMainMenu extends AbstractScene {
 	public NinjaMainMenu(MTApplication mtApplication, String name, String _category) {
 		//Setup van het scherm.
 		super(mtApplication, name);
+		this.category = _category;
 		this.mtApp = mtApplication;
 		this.setClearColor(new MTColor(0, 0, 0, 255));
 		PImage bg_img = mtApplication.loadImage("../data/ninja_bg.jpg");
@@ -41,27 +42,27 @@ public class NinjaMainMenu extends AbstractScene {
 		PImage settings = mtApplication.loadImage("../data/menu/settings.png");
 		PImage exit = mtApplication.loadImage("../data/menu/exit.png");
 		PImage catImg = mtApplication.loadImage("../data/menu/hot.png");
-		if(CategoryContainer.getCategory() == "Binnenland") {
+		if(this.category == "Binnenland") {
 			catImg = mtApplication.loadImage("../data/menu/binnenland.png");
 		}
-		else if(CategoryContainer.getCategory() == "Buitenland") {
+		else if(this.category == "Buitenland") {
 			catImg = mtApplication.loadImage("../data/menu/buitenland.png");
 		}
-		else if(CategoryContainer.getCategory() == "Sport") {
+		else if(this.category == "Sport") {
 			catImg = mtApplication.loadImage("../data/menu/sport.png");
 		}
-		else if(CategoryContainer.getCategory() == "Cultuur") {
+		else if(this.category == "Cultuur") {
 			catImg = mtApplication.loadImage("../data/menu/cultuur.png");
 		}
-		else if(CategoryContainer.getCategory() == "Economie") {
+		else if(this.category == "Economie") {
 			catImg = mtApplication.loadImage("../data/menu/economie.png");
 		}
 		//Aanmaken van het de imageButtons en de menuRibbon
-		final MTRectangle menuRibbon = new MTRectangle(ribbon, mtApp);
-		final MTImageButton categoryButton = new MTImageButton(catImg, mtApp);
-		final MTImageButton themeButton = new MTImageButton(theme, mtApp);
-		final MTImageButton settingsButton = new MTImageButton(settings, mtApp);
-		final MTImageButton exitButton = new MTImageButton(exit, mtApp);
+		MTRectangle menuRibbon = new MTRectangle(ribbon, mtApp);
+		MTImageButton categoryButton = new MTImageButton(catImg, mtApp);
+		MTImageButton themeButton = new MTImageButton(theme, mtApp);
+		MTImageButton settingsButton = new MTImageButton(settings, mtApp);
+		MTImageButton exitButton = new MTImageButton(exit, mtApp);
 		//Verwijder de strokes rondom de imageButton
 		logoMenu.setNoStroke(true);
 		menuRibbon.setNoStroke(true);
@@ -100,10 +101,8 @@ public class NinjaMainMenu extends AbstractScene {
 				case TapEvent.BUTTON_CLICKED:
 					//Code voor categoryselectie
 					mtApp.pushScene();
-					if(newScene == null) {
-						newScene = new NinjaSelectCategory(mtApp, "Ninjanieuws", CategoryContainer.getCategory());
-						mtApp.addScene(newScene);
-					}
+					newScene = new NinjaSelectCategory(mtApp, "Ninjanieuws", category);
+					mtApp.addScene(newScene);
 					mtApp.changeScene(newScene);
 					break;
 				default:
